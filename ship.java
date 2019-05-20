@@ -10,53 +10,35 @@ import java.lang.Math;
 public class ship extends Actor
 {
     int speed;
-    int sideSpeed;
     int initialCD=30;
     int weaponCd;
     int weaponCd2;
-    int weaponCd3;
     boolean start;
     space sendIt;
     int driftCD;
-    int driftX=0 ;
-    int driftY;
+    int driftX=0;
+    int driftY=0;
     int tempX;
     int tempY;
-    int sTempX;
-    int sTempY;
     int switchCD;
     int weaponMode=1;
     int maxSpeed;
     protected boolean limited=true;
     int JumpDriveCD=0;
     boolean saveSpeed=true;
-    int missileCd;
-    int salve=4;
-    int  rocketNumber;
-    int rocketSalveCD;
-    boolean salveActive=false;
     int miningCD;
     boolean miningActive=false;
     boolean rotationLocked=false;
     boolean SpeedLimit;
     drifta Konstante;
-    boolean rotLeft;
     int antriebsPartikel;
-    boolean linksklicked=false;
-    boolean smg=false;
-    int m2;
-    boolean docked;
-    int dockCD;
-    boolean bauend;
-    int bauendCD;
+    boolean smg=false; //abwechselnde Laser
+    int m2; // Mininglaser cooldown
     double energieVerhältnis;
-    int RadarMod=0;
-    boolean WarpMod=false;
     boolean raketen=true;
     int reactorUpgrades=4;
     int maxEnergy=24000;
     int currentEnergy=maxEnergy;
-    // upgradeScreen mü=new upgradeScreen();
     energyBar B=new energyBar();
     public void startup(){
         if (start==false){
@@ -98,13 +80,6 @@ public class ship extends Actor
         B.setLocation(10+(int)c,24);
     }
 
-    public void cheatUpgrade(){
-        if(Greenfoot.isKeyDown("p"))
-            raketen=true;
-        if(Greenfoot.isKeyDown("u"))
-            WarpMod=true;
-
-    }
 
     /**
      * Act - do whatever the ship wants to do. This method is called whenever
@@ -113,44 +88,15 @@ public class ship extends Actor
     public void act() 
     {
         startup();
-        if(docked==false){
+        
             moveWithGhost();
             waffeln();
             miningLaser();
-
             drift();
-
-            preview();
-        }
-        Reaktor();
-        unDock();
-        upgrade();
-        cheatUpgrade();
+        Reaktor();    
     } 
 
-    public void upgrade(){
-        // if(docked==false)
-        // mü.setImage("xxx.png");
-        // else
-        // mü.setImage("upgradescreen.png");
-    }
-
-    public void unDock(){
-        if(Greenfoot.isKeyDown("J")&&dockCD==0&&this.isTouching(dockGhost.class)
-        && speed>-3&&speed<3
-            // &&this.getRotation()<280&&this.getRotation()>260
-        ){
-            dockCD=150;
-            docked=!docked;
-            speed=0;
-            sideSpeed=0;
-
-            Konstante.ghostSpeed=0;
-
-        }
-        if(dockCD>0)dockCD--;
-
-    }
+    
 
     public void miningLaser(){
         if(saveSpeed==true){
@@ -179,15 +125,6 @@ public class ship extends Actor
         }
     }
 
-    public void preview(){
-        if (Greenfoot.isKeyDown("B")&&bauendCD==0){
-            bauend=!bauend;
-            bauendCD=30;
-
-        }
-        if(bauendCD>0) bauendCD--;
-
-    }
    
     public void waffeln(){
         if(Greenfoot.isKeyDown("c")&& switchCD==0){
@@ -205,12 +142,7 @@ public class ship extends Actor
             }
         }
         
-        if(Greenfoot.isKeyDown("t")){
-            if(missileCd==0){
-                salveActive=!salveActive;
-                missileCd=50;
-            }
-        }
+       
         
      
         
@@ -276,10 +208,7 @@ public class ship extends Actor
 
         if( weaponCd>0)weaponCd--;
         if( weaponCd2>0)weaponCd2--;
-        if( weaponCd3>0)weaponCd3--;
         if( switchCD>0)switchCD--;
-        if( missileCd>0)missileCd--;
-        if( rocketSalveCD>0)rocketSalveCD--;
 
     }
     public void drift(){
@@ -289,43 +218,10 @@ public class ship extends Actor
             SpeedLimit=true;
             else SpeedLimit=false;
           
-            if(driftCD==0){
-       
-       
-       
+            if(driftCD==0){       
         if(Greenfoot.isKeyDown("w"))
-//         {
-//             if(maxSpeed<25)
         speed=1;
-//         else speed=-1;
-//        }
-       else if(Greenfoot.isKeyDown("s"))
-//         {
-//             if(maxSpeed<25)
-        speed=-1;
-//         else speed=1;
-//        }
        else speed=0;
-       
-       
-       if(Greenfoot.isKeyDown("d"))
-//        {
-//             if(maxSpeed<25)
-       sideSpeed=1;
-//        else 
-//        sideSpeed=-1;
-//       }
-       
-       else
-       if(Greenfoot.isKeyDown("a"))
-//        {
-//             if(maxSpeed<25)
-       sideSpeed=-1;
-//        else 
-//        sideSpeed=1;
-//       } 
-       else sideSpeed=0;
-       
        
        Konstante.DriftinX=Konstante.DriftinX+driftX;
        
@@ -354,8 +250,7 @@ public class ship extends Actor
 
         G.orig =this;
 
-        G.ghostSpeed=speed;
-        G.sideGhostSpeed=sideSpeed;
+        G.ghostSpeed=speed;       
         if(Konstante!=null){
 
             Konstante.setLocation(getX(),getY());
