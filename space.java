@@ -35,11 +35,10 @@ public class space extends World
     int soundCD;
     int material;
     int material2;
-    preview P= new preview();
     double Entfernung;
-  GreenfootSound Music;
-  int time;
-  Dispatcher dispatcher = new Dispatcher();
+    GreenfootSound Music;
+    int time;
+    Dispatcher dispatcher = new Dispatcher();
     /**
      * Constructor for objects of class space.
      * 
@@ -52,11 +51,10 @@ public class space extends World
         addObject(player,640,360);
         addObject(dispatcher,0,0);
         player.sendIt=this;
-        setPaintOrder(upgradeScreen.class,energyBar.class,
+        setPaintOrder(energyBar.class,
             // turret.class,
             ship.class,asteroids.class);
         Greenfoot.start();
-        this.addObject (P,0,0);
         // Music= new GreenfootSound("PensMusicLeise.mp3");
         // Music.playLoop();
         // this.addObject(new HUD(),640,360);
@@ -67,7 +65,7 @@ public class space extends World
 
     public void act(){
         Office();
-        build();
+       
         // asteroidenGen();gegnerGen();
         // testThisApple();
         this.showText(""+material, 1000, 95);
@@ -290,51 +288,7 @@ public class space extends World
         }
     }
 
-    public void build(){
-
-        MouseInfo M = Greenfoot.getMouseInfo();
-        if(player.bauend==true&&M!=null){
-
-            int mX=M.getX();
-            int mY=M.getY();
-            if(mX>150&&mX<1030&&mY>150&&mY<580){
-
-                P.active=true;
-                P.setLocation(mX,mY);
-
-            }
-            else
-                P.active=false;
-            if(M.getButton()==1&&P.active==true){
-                if(
-                // ironAmount>=400&&nickelAmount>=200&&titanAmount>=40&&aluminiumAmount>=300&&goldAmount>=175
-                material>=500){
-                    P.active=false;
-                    
-                    player.bauend=false;
-                    this.addObject (new Station(),mX,mY);
-                    // ironAmount=ironAmount-1000;
-                    // nickelAmount=nickelAmount-600;
-                    // titanAmount=titanAmount-40;
-                    // aluminiumAmount=aluminiumAmount-100;
-                    // goldAmount=goldAmount-75;
-                    material=material-500;
-                }
-                else{
-                    if(soundCD==0){
-                        Greenfoot.playSound("rer.mp3");
-                        soundCD=15;
-                    }
-                }
-                //errorsound
-            }
-
-        }
-        else  P.active=false;
-       
-        if(soundCD>0)soundCD--;
-    }
-
+   
     public void Office(){
         shipPosX=shipPosX+shipMoveX;
         shipPosY=shipPosY+shipMoveY;
